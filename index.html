@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiseSoul - Prototype Tout-en-Un</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f0;       
+            --primary-color: #2c4a3e;  
+            --accent-color: #d4a373;   
+            --text-color: #333333;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+        header { width: 100%; padding: 15px; box-sizing: border-box; background: #fff; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo { font-weight: bold; font-size: 22px; color: var(--primary-color); letter-spacing: 1px; }
+        .main-container { max-width: 500px; width: 92%; margin: 20px 0; }
+        h1 { color: var(--primary-color); font-size: 1.6rem; margin-bottom: 5px; text-align: center; }
+        .subtitle { font-size: 0.95rem; color: #666; margin-bottom: 20px; text-align: center; }
+        .secret-badge { background-color: #e2e7dd; color: var(--primary-color); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; display: block; text-align: center; margin-bottom: 20px; font-weight: 500; }
+        .section-title { font-size: 1.2rem; color: var(--primary-color); margin-top: 30px; margin-bottom: 10px; border-bottom: 2px solid var(--primary-color); padding-bottom: 5px; font-weight: bold; }
+        .murmure-form { background: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: left; margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary-color); font-size: 0.95rem; }
+        .emotion-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .emotion-btn { background: none; border: 2px solid #e0e0e0; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s ease; }
+        .emotion-btn.selected { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        textarea { width: 100%; height: 120px; border: 1px solid #ccc; border-radius: 12px; padding: 12px; box-sizing: border-box; font-size: 0.95rem; resize: none; margin-bottom: 15px; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; margin-bottom: 15px; font-size: 0.95rem; }
+        .submit-btn { width: 100%; background-color: var(--accent-color); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .action-btn-small { background-color: var(--primary-color); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        .emergency-link { display: block; text-align: center; margin-top: 20px; color: #d9534f; text-decoration: none; font-weight: 600; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <header><div class="logo">WiseSoul 🍃 (Démo Mobile)</div></header>
+
+    <div class="main-container">
+        
+        <!-- 1. ESPACE PATIENT : ENVOI -->
+        <h1>Déposez votre peine.</h1>
+        <p class="subtitle">Anonymat total. Vos murmures sont stockés en sécurité.</p>
+        <div class="secret-badge" id="anon-badge">Génération de votre identité secrète...</div>
+
+        <form class="murmure-form" id="murmureForm">
+            <label>Votre météo intérieure :</label>
+            <div class="emotion-selector">
+                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Submergé')">Submergé</button>
+                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Isolé')">Isolé</button>
+                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Triste')">Triste</button>
+                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'En Colère')">En Colère</button>
+                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Anxieux')">Anxieux</button>
+            </div>
+            
+            <label for="message">Votre murmure :</label>
+            <textarea id="message" placeholder="Racontez ce que vous traversez actuellement..." required></textarea>
+            
+            <label for="location">Ville ou Pays (Optionnel) :</label>
+            <input type="text" id="location" placeholder="Ex: Paris, Lomé...">
+            
+            <button type="submit" class="submit-btn">Envoyer mon murmure à l'abri</button>
+        </form>
+
+        <!-- 2. ESPACE PATIENT : CONSULTATION DES RÉPONSES -->
+        <div class="section-title">Suivre mon murmure</div>
+        <div class="murmure-form">
+            <label>Vérifier si un thérapeute a répondu :</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="recherchePseudo" placeholder="Entrez votre identité secrète" style="margin-bottom:0;">
+                <button type="button" class="action-btn-small" onclick="verifierMesReponses()">Vérifier</button>
+            </div>
+            <div id="boite-reponses" style="margin-top: 15px;"></div>
+        </div>
+
+        <!-- 3. ESPACE THÉRAPEUTE (SIMULATION SIMULTANÉE) -->
+        <div class="section-title">Espace Thérapeute (Zone Test)</div>
+        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">En situation réelle, cette partie est cachée et réservée aux professionnels validés.</p>
+        <div id="flux-therapeute"></div>
+
+        <a href="#" class="emergency-link">⚠️ Lignes d'urgence d'écoute gratuite</a>
+    </div>
+
+    <script>
+        // --- BASE DE DONNÉES LOCALE (LocalStorage) ---
+        if (!localStorage.getItem('wisesoul_db')) {
+            localStorage.setItem('wisesoul_db', JSON.stringify([]));
+        }
+
+        // --- GÉNÉRATEUR DE PSEUDO ANONYME ---
+        const adjectifs = ["Discret", "Bienveillant", "Serein", "Silencieux", "Fort", "Patient"];
+        const noms = ["Astre", "Âme", "Brise", "Esprit", "Nuage", "Étoile"];
+        const monPseudo = `${noms[Math.floor(Math.random() * noms.length)]}${adjectifs[Math.floor(Math.random() * adjectifs.length)]}${Math.floor(Math.random() * 99) + 1}`;
+        document.getElementById('anon-badge').innerText = `Votre identité secrète actuelle : ${monPseudo}`;
+
+        let emotionSelectionnee = "";
+        function selectEmotion(button, emotion) {
+            document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+            emotionSelectionnee = emotion;
+        }
+
+        // --- ACTION PATIENT : ENVOYER ---
+        document.getElementById('murmureForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(!emotionSelectionnee) return alert("Sélectionnez une émotion dans votre météo intérieure.");
+            
+            const db = JSON.parse(localStorage.getItem('wisesoul_db'));
+            const nouveauMurmure = {
+                id: Date.now().toString(),
+                pseudoAnonyme: monPseudo,
+                emotion: emotionSelectionnee,
+                texte: document.getElementById('message').value,
+                localisation: document.getElementById('location').value || "Non spécifiée",
+                reponses: []
+            };
+
+            db.push(nouveauMurmure);
+            localStorage.setItem('wisesoul_db', JSON.stringify(db));
+
+            alert(`Enregistré localement ! Copie bien ce pseudo pour vérifier plus tard : ${monPseudo}`);
+            this.reset();
+            document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
+            emotionSelectionnee = "";
+            chargerFluxTherapeute(); // Rafraîchit instantanément l'espace psy en bas
+        });
+
+        // --- ACTION PATIENT : VÉRIFIER LES RÉPONSES ---
+        function verifierMesReponses() {
+            const pseudo = document.getElementById('recherchePseudo').value.trim();
+            if (!pseudo) return alert("Entrez votre pseudo secret.");
+            
+            const db = JSON.parse(localStorage.getItem('wisesoul_db'));
+            const mesMurmures = db.filter(m => m.pseudoAnonyme.toLowerCase() === pseudo.toLowerCase());
+            const conteneur = document.getElementById('boite-reponses');
+            conteneur.innerHTML = "";
+
+            if(mesMurmures.length === 0) {
+                conteneur.innerHTML = "<p style='font-size:0.9rem; color:#666;'>Aucun murmure trouvé pour ce pseudo.</p>";
+                return;
+            }
+
+            mesMurmures.forEach(m => {
+                let rHTML = m.reponses.length === 0 ? "<p style='color:#888; font-style:italic; font-size:0.9rem;'>Pas encore de réponse d'un psy en bas...</p>" : "";
+                m.reponses.forEach(r => {
+                    rHTML += `<div style="background:#f9fbf7; padding:10px; border-radius:8px; margin-top:8px; border-left: 3px solid var(--primary-color); font-size:0.9rem;"><strong>📢 ${r.auteur} :</strong> ${r.txt}</div>`;
+                });
+                const d = document.createElement('div');
+                d.style.borderBottom = "1px dashed #ccc"; d.style.paddingBottom = "10px"; d.style.marginBottom = "10px";
+                d.innerHTML = `<p style="font-size:0.9rem; color:#444; font-weight:600; margin:0;">Mon murmure (${m.emotion}) :</p><p style="margin:5px 0; font-style:italic; font-size:0.9rem; color:#555;">"${m.texte}"</p>${rHTML}`;
+                conteneur.appendChild(d);
+            });
+        }
+
+        // --- ACTION THÉRAPEUTE : CHARGER ET RÉPONDRE ---
+        function chargerFluxTherapeute() {
+            const db = JSON.parse(localStorage.getItem('wisesoul_db'));
+            const conteneur = document.getElementById('flux-therapeute');
+            conteneur.innerHTML = "";
+
+            if (db.length === 0) {
+                conteneur.innerHTML = "<div class='murmure-form'><p style='font-size:0.9rem; color:#666; text-align:center;'>Aucun murmure envoyé pour le moment.</p></div>";
+                return;
+            }
+
+            // Afficher du plus récent au plus ancien
+            [...db].reverse().forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'murmure-form';
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#666; margin-bottom:8px;">
+                        <span>Patient : <strong>${m.pseudoAnonyme}</strong> (${m.localisation})</span>
+                        <span style="background:#e2e7dd; color:var(--primary-color); padding:2px 8px; border-radius:10px; font-weight:bold;">${m.emotion}</span>
+                    </div>
+                    <p style="font-size:0.95rem; margin:0 0 15px 0; line-height:1.4;">"${m.texte}"</p>
+                    <textarea id="rep-txt-${m.id}" placeholder="Écrivez votre réponse professionnelle..." style="height:70px; font-size:0.85rem; margin-bottom:10px;"></textarea>
+                    <button type="button" class="action-btn-small" style="width:100%;" onclick="laisserReponse('${m.id}')">Répondre à ce patient</button>
+                `;
+                conteneur.appendChild(card);
+            });
+        }
+
+        function laisserReponse(id) {
+            const texteReponse = document.getElementById(`rep-txt-${id}`).value.trim();
+            if (!texteReponse) return alert("Écrivez un message avant d'envoyer.");
+
+            let db = JSON.parse(localStorage.getItem('wisesoul_db'));
+            const index = db.findIndex(m => m.id === id);
+            
+            if (index !== -1) {
+                db[index].reponses.push({
+                    auteur: "Expert WiseSoul",
+                    txt: texteReponse
+                });
+                localStorage.setItem('wisesoul_db', JSON.stringify(db));
+                alert("Réponse enregistrée avec succès !");
+                chargerFluxTherapeute();
+            }
+        }
+
+        // Lancement au chargement de la page
+        chargerFluxTherapeute();
+    </script>
+</body>
+</html>
