@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiseSoul - Consulter une réponse</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent); margin-bottom: 20px; }
+        
+        input {
+            width: 100%;
+            background: #334155;
+            border: 1px solid #475569;
+            border-radius: 12px;
+            color: #fff;
+            padding: 14px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 14px;
+            text-align: left;
+        }
+
+        .error-box {
+            display: none;
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 14px;
+            color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">WiseSoul 🍃 / Réponses</div>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+            Entrez votre code secret reçu lors de l'envoi pour lire le retour du thérapeute.
+        </p>
+
+        <input type="text" id="codeInput" placeholder="Ex: WS-1945" autocomplete="off">
+        <button class="btn" onclick="chercherReponse()">Vérifier mon code</button>
+
+        <!-- Zone de réponse si trouvée -->
+        <div id="resultBox" class="result-box">
+            <h4 style="color: var(--accent); margin-bottom: 8px;">Message du thérapeute :</h4>
+            <p id="replyText" style="line-height: 1.5; font-size: 15px;"></p>
+        </div>
+
+        <!-- Zone d'erreur -->
+        <div id="errorBox" class="error-box">
+            Aucune réponse n'est encore disponible pour ce code. Réessayez plus tard.
+        </div>
+        
+        <p style="margin-top: 20px;"><a href="index.html" style="color: var(--text-muted); font-size: 13px;">Retour à l'accueil</a></p>
+    </div>
+
+    <script>
+        // ==========================================
+        // C'EST ICI QUE TU AJOUTES TES RÉPONSES !
+        // ==========================================
+        const baseReponses = {
+            "WS-1945": "Bonjour SereinSouffle310. J'ai bien reçu ton murmure et je vois que ton cœur est lourd. C'est tout à fait normal de se sentir isolé parfois. Prends une grande inspiration, sache que tu n'es pas seul ici. Je suis là à l'écoute. Prends soin de toi.",
+            
+            "WS-0000": "Exemple de réponse pour un autre code..."
+        };
+
+        function chercherReponse() {
+            const code = document.getElementById('codeInput').value.trim().toUpperCase();
+            const resultBox = document.getElementById('resultBox');
+            const errorBox = document.getElementById('errorBox');
+            const replyText = document.getElementById('replyText');
+
+            if(baseReponses[code]) {
+                replyText.innerText = baseReponses[code];
+                resultBox.style.display = 'block';
+                errorBox.style.display = 'none';
+            } else {
+                resultBox.style.display = 'none';
+                errorBox.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
