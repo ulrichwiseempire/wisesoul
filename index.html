@@ -155,85 +155,150 @@
         .submit-btn:hover {
             background: var(--accent-hover);
         }
+
+        /* Styles pour l'écran de succès pop-up */
+        .modal-success {
+            display: none;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .code-box {
+            background: #1e293b;
+            border: 2px solid var(--accent);
+            color: #fff;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <header>
-            <div class="logo">WiseSoul 🍃</div>
-            <div class="subtitle">Votre espace d'expression libre et sécurisé</div>
-        </header>
+        <!-- Zone Formulaire principale -->
+        <div id="formZone">
+            <header>
+                <div class="logo">WiseSoul 🍃</div>
+                <div class="subtitle">Votre espace d'expression libre et sécurisé</div>
+            </header>
 
-        <!-- Générateur de pseudo automatique -->
-        <div class="identity-box">
-            Votre identité secrète actuelle : <span id="pseudoDisplay">Génération...</span>
+            <div class="identity-box">
+                Votre identité secrète actuelle : <span id="pseudoDisplay">Génération...</span>
+            </div>
+
+            <form id="murmureForm" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="09108d8f-5738-41e8-a295-c69e2bb3eb6e">
+                
+                <!-- On désactive la redirection automatique pour pouvoir afficher le code secret en JS -->
+                <input type="hidden" name="redirect" value="">
+
+                <label>Votre météo intérieure :</label>
+                <div class="emotion-selector">
+                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Submergé')">Submergé</button>
+                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Isolé')">Isolé</button>
+                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Triste')">Triste</button>
+                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'En Colère')">En Colère</button>
+                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Anxieux')">Anxieux</button>
+                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Besoin d\'aide')">Besoin d'aide</button>
+                </div>
+                
+                <input type="hidden" name="Emotion" id="hiddenEmotion">
+                <input type="hidden" name="Pseudo Anonyme" id="hiddenPseudo">
+                <input type="hidden" name="Code Secret de Suivi" id="hiddenCode">
+                
+                <label for="message">Votre murmure :</label>
+                <textarea name="Message" id="message" placeholder="Racontez librement ce que vous traversez actuellement..." required></textarea>
+                
+                <label for="location">Ville ou Pays (Optionnel) :</label>
+                <input type="text" name="Localisation" id="location" placeholder="Ex: Paris, Lomé, Abidjan...">
+                
+                <button type="submit" class="submit-btn" id="btnTexte">Envoyer mon murmure à l'abri</button>
+            </form>
         </div>
 
-        <!-- Formulaire connecté à Web3Forms -->
-        <form action="https://api.web3forms.com/submit" method="POST">
-            <!-- Clé d'accès unique -->
-            <input type="hidden" name="access_key" value="09108d8f-5738-41e8-a295-c69e2bb3eb6e">
-            <!-- Redirection vers ton site après envoi -->
-            <input type="hidden" name="redirect" value="https://wisesoul.onrender.com">
-
-            <label>Votre météo intérieure :</label>
-            <div class="emotion-selector">
-                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Submergé')">Submergé</button>
-                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Isolé')">Isolé</button>
-                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Triste')">Triste</button>
-                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'En Colère')">En Colère</button>
-                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Anxieux')">Anxieux</button>
-                <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Besoin d\'aide')">Besoin d'aide</button>
-            </div>
+        <!-- Zone Écran de succès (masquée au départ) -->
+        <div id="successZone" class="modal-success">
+            <div class="logo" style="font-size: 50px;">🕊️</div>
+            <h2 style="margin-bottom: 10px;">Murmure envoyé</h2>
+            <p style="color: var(--text-muted); font-size: 14px;">Votre message est à l'abri. Pour lire la réponse du thérapeute plus tard, notez précieusement ce code unique :</p>
             
-            <!-- Champs invisibles transmis dans l'e-mail -->
-            <input type="hidden" name="Emotion" id="hiddenEmotion">
-            <input type="hidden" name="Pseudo Anonyme" id="hiddenPseudo">
+            <div class="code-box" id="codeDisplay">WS-0000</div>
             
-            <label for="message">Votre murmure :</label>
-            <textarea name="Message" id="message" placeholder="Racontez librement ce que vous traversez actuellement..." required></textarea>
-            
-            <label for="location">Ville ou Pays (Optionnel) :</label>
-            <input type="text" name="Localisation" id="location" placeholder="Ex: Paris, Lomé, Abidjan...">
-            
-            <button type="submit" class="submit-btn">Envoyer mon murmure à l'abri</button>
-        </form>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;">Revenez bientôt sur notre espace réponses avec ce numéro.</p>
+            <button class="submit-btn" style="margin-top: 25px; background: #334155;" onclick="window.location.reload()">Écrire un nouveau murmure</button>
+        </div>
     </div>
 
     <script>
-        // Liste de pseudos poétiques pour préserver l'anonymat complet
         const adjectifs = ["Silencieux", "Résilient", "Apaisé", "Courageux", "Secret", "Étoilé", "Profond", "Serein"];
         const noms = ["Voyageur", "Esprit", "Souffle", "Rêveur", "Nuage", "Écho", "Phare", "Pensée"];
 
-        // Génération du pseudo unique
         const adj = adjectifs[Math.floor(Math.random() * adjectifs.length)];
         const nom = noms[Math.floor(Math.random() * noms.length)];
         const num = Math.floor(Math.random() * 900) + 100;
         const monPseudo = `${adj}${nom}${num}`;
 
-        // Affichage sur l'écran et assignation au champ caché du mail
         document.getElementById('pseudoDisplay').innerText = monPseudo;
         document.getElementById('hiddenPseudo').value = monPseudo;
+
+        // Génération d'un Code Secret Unique (Ex: WS-4819)
+        const codeUnique = "WS-" + Math.floor(Math.random() * 9000 + 1000);
+        document.getElementById('hiddenCode').value = codeUnique;
+        document.getElementById('codeDisplay').innerText = codeUnique;
 
         let emotionSelectionnee = "";
 
         function selectEmotion(button, emotion) {
-            // Nettoyer la sélection précédente
             document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
-            // Activer le bouton cliqué
             button.classList.add('selected');
-            // Mettre à jour la valeur pour le formulaire
             emotionSelectionnee = emotion;
             document.getElementById('hiddenEmotion').value = emotion;
         }
 
-        // Vérification de sécurité au moment de l'envoi
-        document.querySelector('form').addEventListener('submit', function(e) {
+        // Interception de l'envoi pour envoyer en arrière-plan (AJAX) sans changer de page
+        document.getElementById('murmureForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
             if (!emotionSelectionnee) {
-                e.preventDefault();
                 alert("S'il vous plaît, sélectionnez une émotion dans votre météo intérieure avant d'envoyer.");
+                return;
             }
+
+            const btn = document.getElementById('btnTexte');
+            btn.innerText = "Envoi en cours...";
+            btn.disabled = true;
+
+            const formData = new FormData(this);
+
+            // Envoi transparent à Web3Forms
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Masquer le formulaire et afficher le code secret à l'utilisateur
+                    document.getElementById('formZone').style.display = 'none';
+                    document.getElementById('successZone').style.display = 'block';
+                } else {
+                    alert("Oups, un problème est survenu. Réessaye.");
+                    btn.innerText = "Envoyer mon murmure à l'abri";
+                    btn.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("Erreur de connexion.");
+                btn.innerText = "Envoyer mon murmure à l'abri";
+                btn.disabled = false;
+            });
         });
     </script>
 </body>
