@@ -12,13 +12,15 @@
             --text-muted: #94a3b8;
             --accent: #10b981;
             --accent-hover: #059669;
+            --secondary: #475569;
+            --secondary-hover: #334155;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -28,48 +30,42 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 15px;
+            padding: 20px;
         }
 
-        .app-container {
+        .container {
             width: 100%;
             max-width: 480px;
             background: var(--card-bg);
             border-radius: 24px;
-            padding: 24px;
+            padding: 32px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
-        header {
+        .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .logo {
             font-size: 28px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--accent);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .subtitle {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 15px;
+            line-height: 1.4;
         }
 
-        .identity-box {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px dashed var(--accent);
-            border-radius: 16px;
-            padding: 12px;
-            text-align: center;
-            margin-bottom: 24px;
-            font-size: 14px;
-        }
-
-        .identity-box span {
-            font-weight: bold;
-            color: var(--accent);
+        .form-group {
+            margin-bottom: 20px;
         }
 
         label {
@@ -80,224 +76,216 @@
             color: var(--text-muted);
         }
 
-        .emotion-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .emotion-btn {
+        select, textarea {
+            width: 100%;
             background: #334155;
-            border: 2px solid transparent;
-            color: var(--text-main);
-            padding: 10px 5px;
+            border: 1px solid #475569;
             border-radius: 12px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-            text-align: center;
+            color: #fff;
+            padding: 14px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        .emotion-btn.selected {
-            background: var(--accent);
-            border-color: #fff;
-            font-weight: bold;
+        select:focus, textarea:focus {
+            border-color: var(--accent);
         }
 
         textarea {
-            width: 100%;
             height: 120px;
-            background: #334155;
-            border: 1px solid #475569;
-            border-radius: 14px;
-            color: var(--text-main);
-            padding: 12px;
-            font-size: 15px;
             resize: none;
-            margin-bottom: 16px;
-            outline: none;
         }
 
-        textarea:focus {
-            border-color: var(--accent);
-        }
-
-        input[type="text"] {
+        .btn {
             width: 100%;
-            background: #334155;
-            border: 1px solid #475569;
-            border-radius: 14px;
-            color: var(--text-main);
-            padding: 12px;
-            font-size: 15px;
-            margin-bottom: 24px;
-            outline: none;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--accent);
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: var(--accent);
             color: white;
             border: none;
-            padding: 14px;
+            padding: 16px;
             border-radius: 14px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 12px;
         }
 
-        .submit-btn:hover {
+        .btn-primary {
+            background: var(--accent);
+        }
+
+        .btn-primary:hover {
             background: var(--accent-hover);
         }
 
-        /* Styles pour l'écran de succès pop-up */
-        .modal-success {
-            display: none;
-            text-align: center;
-            padding: 10px 0;
+        .btn-secondary {
+            background: var(--secondary);
+            font-size: 15px;
+            padding: 14px;
+            margin-bottom: 0;
         }
 
-        .code-box {
-            background: #1e293b;
-            border: 2px solid var(--accent);
-            color: #fff;
-            font-size: 22px;
+        .btn-secondary:hover {
+            background: var(--secondary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .status-box {
+            display: none;
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .status-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent);
+            color: #a7f3d0;
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+        }
+
+        .code-display {
+            font-family: monospace;
+            font-size: 20px;
             font-weight: bold;
-            letter-spacing: 2px;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
             display: inline-block;
+            margin: 10px 0;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- Zone Formulaire principale -->
-        <div id="formZone">
-            <header>
-                <div class="logo">WiseSoul 🍃</div>
-                <div class="subtitle">Votre espace d'expression libre et sécurisé</div>
-            </header>
+    <div class="container">
+        <div class="header">
+            <div class="logo">WiseSoul 🍃</div>
+            <p class="subtitle">Partagez ce qui pèse sur votre cœur en toute sécurité. Aucun compte requis, anonymat 100% garanti.</p>
+        </div>
 
-            <div class="identity-box">
-                Votre identité secrète actuelle : <span id="pseudoDisplay">Génération...</span>
+        <form id="murmurForm">
+            <!-- Remplacement de la clé d'accès Web3Forms publique -->
+            <input type="hidden" name="access_key" value="6cb78771-a47f-449e-b85f-86f78a2cb65f">
+            
+            <!-- Champs masqués pour le traitement interne -->
+            <input type="hidden" name="Pseudo-anonyme" id="hiddenPseudo">
+            <input type="hidden" name="Code secret de suivi" id="hiddenCode">
+
+            <div class="form-group">
+                <label for="emotion">Quelle est votre émotion dominante ?</label>
+                <select name="Émotion" id="emotion">
+                    <option value="Besoin de parler">Besoin de confier un secret 🤫</option>
+                    <option value="Triste">Triste ou Mélancolique 😢</option>
+                    <option value="Anxieux">Anxieux ou Stressé 😟</option>
+                    <option value="Submerger">Submergé ou Perdu 🌊</option>
+                    <option value="Isole">Isolé ou Seul 🏚️</option>
+                </select>
             </div>
 
-            <form id="murmureForm" action="https://api.web3forms.com/submit" method="POST">
-                <input type="hidden" name="access_key" value="09108d8f-5738-41e8-a295-c69e2bb3eb6e">
-                
-                <!-- On désactive la redirection automatique pour pouvoir afficher le code secret en JS -->
-                <input type="hidden" name="redirect" value="">
+            <div class="form-group">
+                <label for="message">Votre murmure</label>
+                <textarea name="Message" id="message" placeholder="Écrivez librement ici ce que vous ressentez..." required></textarea>
+            </div>
 
-                <label>Votre météo intérieure :</label>
-                <div class="emotion-selector">
-                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Submergé')">Submergé</button>
-                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Isolé')">Isolé</button>
-                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Triste')">Triste</button>
-                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'En Colère')">En Colère</button>
-                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Anxieux')">Anxieux</button>
-                    <button type="button" class="emotion-btn" onclick="selectEmotion(this, 'Besoin d\'aide')">Besoin d'aide</button>
-                </div>
-                
-                <input type="hidden" name="Emotion" id="hiddenEmotion">
-                <input type="hidden" name="Pseudo Anonyme" id="hiddenPseudo">
-                <input type="hidden" name="Code Secret de Suivi" id="hiddenCode">
-                
-                <label for="message">Votre murmure :</label>
-                <textarea name="Message" id="message" placeholder="Racontez librement ce que vous traversez actuellement..." required></textarea>
-                
-                <label for="location">Ville ou Pays (Optionnel) :</label>
-                <input type="text" name="Localisation" id="location" placeholder="Ex: Paris, Lomé, Abidjan...">
-                
-                <button type="submit" class="submit-btn" id="btnTexte">Envoyer mon murmure à l'abri</button>
-            </form>
-        </div>
+            <div class="form-group">
+                <label for="location">Votre Ville ou Localisation (Optionnel)</label>
+                <input type="text" name="Localisation" id="location" placeholder="Ex: Lomé, Paris, Abidjan...">
+            </div>
 
-        <!-- Zone Écran de succès (masquée au départ) -->
-        <div id="successZone" class="modal-success">
-            <div class="logo" style="font-size: 50px;">🕊️</div>
-            <h2 style="margin-bottom: 10px;">Murmure envoyé</h2>
-            <p style="color: var(--text-muted); font-size: 14px;">Votre message est à l'abri. Pour lire la réponse du thérapeute plus tard, notez précieusement ce code unique :</p>
-            
-            <div class="code-box" id="codeDisplay">WS-0000</div>
-            
-            <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;">Revenez bientôt sur notre espace réponses avec ce numéro.</p>
-            <button class="submit-btn" style="margin-top: 25px; background: #334155;" onclick="window.location.reload()">Écrire un nouveau murmure</button>
-        </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Envoyer mon murmure</button>
+        </form>
+
+        <!-- Nouveau bouton pour accéder directement aux réponses -->
+        <a href="reponses.html" class="btn btn-secondary">Consulter une réponse existante</a>
+
+        <div id="statusBox" class="status-box"></div>
     </div>
 
     <script>
-        const adjectifs = ["Silencieux", "Résilient", "Apaisé", "Courageux", "Secret", "Étoilé", "Profond", "Serein"];
-        const noms = ["Voyageur", "Esprit", "Souffle", "Rêveur", "Nuage", "Écho", "Phare", "Pensée"];
+        // Listes pour générer des pseudonymes poétiques et uniques
+        const adjectifs = ["Serein", "Silencieux", "Résilient", "Secret", "Apaisé", "Lumineux", "Profond", "Vagabond", "Timide"];
+        const noms = ["Souffle", "Écho", "Rêveur", "Murmure", "Passant", "Esprit", "Voyageur", "Cœur", "Regard"];
 
-        const adj = adjectifs[Math.floor(Math.random() * adjectifs.length)];
-        const nom = noms[Math.floor(Math.random() * noms.length)];
-        const num = Math.floor(Math.random() * 900) + 100;
-        const monPseudo = `${adj}${nom}${num}`;
+        // Fonction utilitaire pour générer des identifiants uniques
+        function genererInfosAnonymes() {
+            const adj = adjectifs[Math.floor(Math.random() * adjectifs.length)];
+            const nom = noms[Math.floor(Math.random() * noms.length)];
+            const nombre = Math.floor(100 + Math.random() * 900); // 3 chiffres
+            const codeChiffres = Math.floor(1000 + Math.random() * 9000); // 4 chiffres
 
-        document.getElementById('pseudoDisplay').innerText = monPseudo;
-        document.getElementById('hiddenPseudo').value = monPseudo;
-
-        // Génération d'un Code Secret Unique (Ex: WS-4819)
-        const codeUnique = "WS-" + Math.floor(Math.random() * 9000 + 1000);
-        document.getElementById('hiddenCode').value = codeUnique;
-        document.getElementById('codeDisplay').innerText = codeUnique;
-
-        let emotionSelectionnee = "";
-
-        function selectEmotion(button, emotion) {
-            document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-            emotionSelectionnee = emotion;
-            document.getElementById('hiddenEmotion').value = emotion;
+            return {
+                pseudo: `${adj}${nom}${nombre}`,
+                code: `WS-${codeChiffres}`
+            };
         }
 
-        // Interception de l'envoi pour envoyer en arrière-plan (AJAX) sans changer de page
-        document.getElementById('murmureForm').addEventListener('submit', function(e) {
+        const form = document.getElementById('murmurForm');
+        const statusBox = document.getElementById('statusBox');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Désactiver le bouton pendant l'envoi
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Envoi en cours...";
 
-            if (!emotionSelectionnee) {
-                alert("S'il vous plaît, sélectionnez une émotion dans votre météo intérieure avant d'envoyer.");
-                return;
-            }
+            // Génération des données d'anonymat pour cette soumission
+            const anonyme = genererInfosAnonymes();
+            document.getElementById('hiddenPseudo').value = anonyme.pseudo;
+            document.getElementById('hiddenCode').value = anonyme.code;
 
-            const btn = document.getElementById('btnTexte');
-            btn.innerText = "Envoi en cours...";
-            btn.disabled = true;
+            const formData = new FormData(form);
 
-            const formData = new FormData(this);
-
-            // Envoi transparent à Web3Forms
-            fetch(this.action, {
+            fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                body: formData
             })
-            .then(response => {
-                if (response.ok) {
-                    // Masquer le formulaire et afficher le code secret à l'utilisateur
-                    document.getElementById('formZone').style.display = 'none';
-                    document.getElementById('successZone').style.display = 'block';
+            .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                    statusBox.className = "status-box status-success";
+                    statusBox.innerHTML = `
+                        <p style="font-weight:bold; font-size:16px; margin-bottom:8px;">✨ Murmure envoyé avec succès !</p>
+                        <p>Votre pseudo temporaire : <strong>${anonyme.pseudo}</strong></p>
+                        <p>Voici votre code secret unique pour consulter la réponse du thérapeute :</p>
+                        <div class="code-display">${anonyme.code}</div>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">⚠️ Notez bien ce code. Sans lui, vous ne pourrez pas lire votre réponse.</p>
+                    `;
+                    form.reset();
                 } else {
-                    alert("Oups, un problème est survenu. Réessaye.");
-                    btn.innerText = "Envoyer mon murmure à l'abri";
-                    btn.disabled = false;
+                    console.log(json);
+                    statusBox.className = "status-box status-error";
+                    statusBox.innerText = json.message;
                 }
             })
             .catch(error => {
-                alert("Erreur de connexion.");
-                btn.innerText = "Envoyer mon murmure à l'abri";
-                btn.disabled = false;
+                console.log(error);
+                statusBox.className = "status-box status-error";
+                statusBox.innerText = "Une erreur réseau est survenue. Veuillez réessayer.";
+            })
+            .then(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Envoyer mon murmure";
+                statusBox.style.display = "block";
+                statusBox.scrollIntoView({ behavior: 'smooth' });
             });
         });
     </script>
